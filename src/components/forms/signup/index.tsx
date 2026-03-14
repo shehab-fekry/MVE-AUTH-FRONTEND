@@ -114,7 +114,7 @@ const SignupForm = ({ role }: { role: string }) => {
   };
 
   return (
-    <div className='flex h-full w-[60%] flex-col items-center sm:w-[40%] lg:w-[35%] xl:w-[20%]'>
+    <div className='flex h-full w-[60%] flex-col items-center sm:w-[40%] lg:w-[35%] xl:w-[22%]'>
       <FormStepper
         step={showOtp ? 'otp' : 'signup'}
         goBackAction={
@@ -130,7 +130,7 @@ const SignupForm = ({ role }: { role: string }) => {
       {!showOtp ? (
         <form
           onSubmit={handleSubmit(onSubmitHandler)}
-          className='grid w-full items-start gap-6'
+          className='grid w-full items-start gap-6 2xl:w-[80%]'
         >
           {/* name */}
           <CustomInput

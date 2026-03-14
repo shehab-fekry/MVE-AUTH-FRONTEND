@@ -9,7 +9,7 @@ const FormStepper = ({
   goBackAction: () => void;
 }) => {
   const headerText = {
-    signup: 'Register Your Account.',
+    signup: 'Create Account.',
     otp: 'Enter OTP',
     forgotPassword: 'Forgot Password',
     newPassword: 'Reset Password',
