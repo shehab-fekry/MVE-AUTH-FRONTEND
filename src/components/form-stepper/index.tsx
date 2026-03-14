@@ -12,7 +12,7 @@ const FormStepper = ({
     signup: 'Register Your Account.',
     otp: 'Enter OTP',
     forgotPassword: 'Forgot Password',
-    newPassword: 'Set New Password',
+    newPassword: 'Reset Password',
   };
 
   return (

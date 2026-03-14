@@ -32,3 +32,35 @@ export const signinSchema = z.object({
 });
 // signin schema type
 export type signinSchemaType = z.infer<typeof signinSchema>;
+
+// forgot password schema
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .nonempty()
+    .email({
+      pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      error: 'Invalid email format',
+    }),
+});
+// forgot password schema type
+export type forgotPasswordSchemaType = z.infer<
+  typeof forgotPasswordSchema
+>;
+
+// new password schema
+export const newPasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .nonempty({ error: 'Password is required' }),
+    confirmPassword: z
+      .string()
+      .nonempty({ error: 'Confirm Password is required' }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    error: "Passwords Doesn't match",
+    path: ['confirmPassword'],
+  });
+// new password schema type
+export type newPasswordSchemaType = z.infer<typeof newPasswordSchema>;

@@ -37,10 +37,7 @@ const SigninForm = () => {
   // apis
   const { data, isPending, mutate } = useMutationPostUserLogin();
 
-  console.log('🚀 ~ SigninForm ~ data:', data);
-
   const onSbmuitHnadler = (fromData: signinSchemaType) => {
-    console.log('🚀 ~ onSbmuitHnadler ~ fromData:', fromData);
     mutate(fromData);
   };
 
