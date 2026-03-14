@@ -132,7 +132,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className='flex h-full w-[60%] flex-col items-center sm:w-[40%] lg:w-[35%] xl:w-[20%]'>
+    <div className='flex h-full w-[60%] flex-col items-center sm:w-[40%] lg:w-[35%] xl:w-[22%]'>
       <FormStepper
         step={step}
         goBackAction={() => router.push(ROUTES.login)}
@@ -142,7 +142,7 @@ const ForgotPasswordForm = () => {
           onSubmit={forgotPassForm.handleSubmit(
             onSubmitForgotPassword
           )}
-          className='grid w-full items-start gap-6'
+          className='grid w-full items-start gap-6 2xl:w-[80%]'
         >
           {/* email */}
           <CustomInput
@@ -184,7 +184,7 @@ const ForgotPasswordForm = () => {
         step === 'newPassword' && (
           <form
             onSubmit={newPassForm.handleSubmit(onSubmitNewPassword)}
-            className='grid w-full items-start gap-6'
+            className='grid w-full items-start gap-6 2xl:w-[80%]'
           >
             {/* new password */}
             <CustomInput
