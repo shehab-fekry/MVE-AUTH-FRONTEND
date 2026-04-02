@@ -9,10 +9,16 @@ type IResponse = {
   message: string;
 };
 
-const postUserRegisteration = async (payload: signupSchemaType) => {
+interface IRequestProps extends signupSchemaType {
+  role: string;
+  phoneNumber?: string;
+  country?: string;
+}
+
+const postUserRegisteration = async (payload: IRequestProps) => {
   try {
     const res = await clientApi.post('auth/api/user-registeration', {
-      json: payload,
+      json: { ...payload, role: payload.role.toUpperCase() },
       // credentials: 'include',
     });
     const data = (await res.json()) as IResponse;
@@ -43,7 +49,7 @@ const postUserRegisteration = async (payload: signupSchemaType) => {
 
 export const useMutationPostUserRegisteration = () => {
   return useMutation({
-    mutationFn: (payload: signupSchemaType) =>
+    mutationFn: (payload: IRequestProps) =>
       postUserRegisteration(payload),
     mutationKey: [POST_USER_REGISTERATION_KEY],
     onError: (error) => {

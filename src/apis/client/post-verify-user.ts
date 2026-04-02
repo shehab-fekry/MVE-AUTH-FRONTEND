@@ -9,7 +9,10 @@ type IRequest = {
   name: string;
   email: string;
   password: string;
+  phoneNumber?: string;
+  country?: string;
   otp: string;
+  role: string;
 };
 
 type IResponse = {
@@ -19,7 +22,7 @@ type IResponse = {
 const postVerifyUser = async (payload: IRequest) => {
   try {
     const res = await clientApi.post('auth/api/user-verification', {
-      json: payload,
+      json: { ...payload, role: payload.role.toUpperCase() },
     });
     const data = (await res.json()) as IResponse;
 

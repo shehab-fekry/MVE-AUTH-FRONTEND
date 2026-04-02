@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import PhoneInput, { CountryData } from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,6 +25,7 @@ import { ROUTES } from '@/src/core/constants';
 import Otp from '../../otp';
 import FormStepper from '../../form-stepper';
 import CustomInput from '../../input';
+import { Label } from '../../ui/label';
 
 const SignupForm = ({ role }: { role: string }) => {
   const router = useRouter();
@@ -46,6 +49,13 @@ const SignupForm = ({ role }: { role: string }) => {
   const [showOtp, setShowOtp] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [country, setCountry] = useState({
+    value: {
+      phone: '',
+      countryCode: '',
+    },
+    error: '',
+  });
   const [userData, setUserData] = useState<signupSchemaType | null>(
     null
   );
@@ -66,9 +76,14 @@ const SignupForm = ({ role }: { role: string }) => {
   const onSubmitHandler = (formData: signupSchemaType) => {
     mutateRegister(
       {
+        role,
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        ...(role === 'seller' && {
+          phoneNumber: country.value.phone,
+          country: country.value.countryCode,
+        }),
       },
       {
         onSuccess: () => {
@@ -82,11 +97,21 @@ const SignupForm = ({ role }: { role: string }) => {
 
   const onResendOtp = () => {
     if (userData)
-      mutateRegister(userData, {
-        onSuccess: () => {
-          setTimer(60);
+      mutateRegister(
+        {
+          role,
+          ...(role === 'seller' && {
+            phoneNumber: country.value.phone,
+            country: country.value.countryCode,
+          }),
+          ...userData,
         },
-      });
+        {
+          onSuccess: () => {
+            setTimer(60);
+          },
+        }
+      );
   };
 
   const onVerifyOtp = () => {
@@ -103,14 +128,24 @@ const SignupForm = ({ role }: { role: string }) => {
       otp: otpString,
     };
 
-    mutateVerify(payload, {
-      onSuccess: () => {
-        router.push(ROUTES.login);
+    mutateVerify(
+      {
+        role,
+        ...(role === 'seller' && {
+          phoneNumber: country.value.phone,
+          country: country.value.countryCode,
+        }),
+        ...payload,
       },
-      onError: () => {
-        otpRef.current[0]?.focus();
-      },
-    });
+      {
+        onSuccess: () => {
+          router.push(ROUTES.login);
+        },
+        onError: () => {
+          otpRef.current[0]?.focus();
+        },
+      }
+    );
   };
 
   return (
@@ -150,6 +185,56 @@ const SignupForm = ({ role }: { role: string }) => {
             beforeContent={<Mail className='m-2 size-4.75' />}
             {...register('email')}
           />
+          {/* phone number */}
+          {role === 'seller' && (
+            <div className='grid gap-3'>
+              <Label htmlFor='phone'>Phone Number</Label>
+              <div
+                className={cn(
+                  'rounded-md border',
+                  country.error && 'border-red-400'
+                )}
+              >
+                <PhoneInput
+                  inputStyle={{
+                    height: '36px',
+                    width: '100%',
+                    background: 'none',
+                    border: country.error
+                      ? 'none'
+                      : '1px solid #d1d5db',
+                  }}
+                  dropdownStyle={{
+                    borderRadius: '8px',
+                    // width: '335px',
+                  }}
+                  dropdownClass='hide-scrollbar w-[1000px]'
+                  country={'eg'}
+                  value={country.value.phone}
+                  onChange={(phone, data) => {
+                    return setCountry({
+                      value: {
+                        phone,
+                        countryCode: (data as CountryData)
+                          .countryCode,
+                      },
+                      error:
+                        phone.length < 5
+                          ? 'Phone number is required'
+                          : phone.length < 7
+                            ? 'Phone Must be 11 numbers'
+                            : '',
+                    });
+                  }}
+                />
+              </div>
+              {country.error && (
+                <div className='-mt-1.5 ml-2 text-xs text-red-500'>
+                  {country.error}
+                </div>
+              )}
+            </div>
+          )}
           {/* password */}
           <CustomInput
             htmlFor='password'
@@ -188,6 +273,15 @@ const SignupForm = ({ role }: { role: string }) => {
             iconBefore={
               <PencilLine className='size-4 -translate-x-7 translate-y-7 transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0' />
             }
+            onClick={() => {
+              if (role === 'seller' && !country.value.phone) {
+                setCountry((prev) => ({
+                  ...prev,
+                  error: 'Phone number is required',
+                }));
+                return;
+              }
+            }}
           >
             Sign up
           </CustomButton>
@@ -202,6 +296,7 @@ const SignupForm = ({ role }: { role: string }) => {
           onResendOtp={onResendOtp}
           isPendingResend={isPendingRegister}
           timer={timer}
+          role={role}
         />
       )}
     </div>

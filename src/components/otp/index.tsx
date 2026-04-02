@@ -18,6 +18,7 @@ const Otp = ({
   isPendingVerify,
   onResendOtp,
   isPendingResend,
+  role,
 }: {
   otp: string[];
   setOtp: Dispatch<SetStateAction<string[]>>;
@@ -27,6 +28,7 @@ const Otp = ({
   isPendingVerify: boolean;
   onResendOtp: () => void;
   isPendingResend: boolean;
+  role: string;
 }) => {
   // OTP digits handler
   const onKeyDownHandler = (
@@ -85,7 +87,12 @@ const Otp = ({
       <div className='flex w-full flex-col items-center gap-3'>
         <CustomButton
           variant={'ghost'}
-          className='hover:bg-ternary group w-full overflow-hidden p-0 hover:text-black'
+          className={cn(
+            'hover:bg-ternary group w-full overflow-hidden p-0 hover:text-black',
+            role === 'customer'
+              ? 'hover:bg-ternary'
+              : 'hover:bg-quaternary'
+          )}
           isPending={isPendingVerify}
           iconBefore={
             <ShieldCheck className='size-4 -translate-x-7 translate-y-7 transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0' />

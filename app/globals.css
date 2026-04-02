@@ -143,7 +143,19 @@ button[data-slot='dialog-close']:hover {
   border: 1px solid black;
 }
 
-.noselect {
+/* Country Selector styles */
+
+.flag-dropdown {
+  border-radius: 8px 0 0 8px !important;
+}
+
+.flag-dropdown:hover {
+  border-radius: 8px 0 0 8px !important;
+}
+
+/* Paragrapghs Selection */
+
+.no-select {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -151,4 +163,15 @@ button[data-slot='dialog-close']:hover {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
   supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* Hidden ScrollBar */
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and old Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
