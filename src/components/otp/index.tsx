@@ -28,7 +28,7 @@ const Otp = ({
   isPendingVerify: boolean;
   onResendOtp: () => void;
   isPendingResend: boolean;
-  role: string;
+  role?: string;
 }) => {
   // OTP digits handler
   const onKeyDownHandler = (

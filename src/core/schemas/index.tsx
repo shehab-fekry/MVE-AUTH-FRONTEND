@@ -37,7 +37,7 @@ export type signinSchemaType = z.infer<typeof signinSchema>;
 export const forgotPasswordSchema = z.object({
   email: z
     .string()
-    .nonempty()
+    .nonempty({ error: 'Email is required' })
     .email({
       pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
       error: 'Invalid email format',
